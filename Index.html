@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQ Infrastructure Study Hub — Joshua's Prep Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --ink:    #0e1117;
+  --paper:  #f5f2eb;
+  --cream:  #ede9df;
+  --warm:   #e8e0d0;
+  --rule:   #c8bfaf;
+  --muted:  #8a7f72;
+  --accent: #c84b2f;
+  --gold:   #c9960a;
+  --forest: #2d6a4f;
+  --navy:   #1b3a5c;
+  --sky:    #2b7cb3;
+  --purple: #5c3d7a;
+  --sand:   #d4a853;
+  --serif:  'DM Serif Display', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+  --mono:   'JetBrains Mono', monospace;
+  --r:      8px;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY ───────────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+  z-index: 9999;
+}
+
+/* ── HEADER ──────────────────────────────────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  color: #f0ebe2;
+  padding: 0 clamp(20px, 5vw, 80px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 58px;
+  border-bottom: 2px solid var(--accent);
+}
+.header-logo {
+  font-family: var(--serif);
+  font-size: 20px;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+.header-logo span { color: var(--accent); }
+.header-nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.header-nav::-webkit-scrollbar { display: none; }
+.nav-pill {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #a09080;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
+  transition: all .2s;
+}
+.nav-pill:hover { color: #f0ebe2; background: rgba(255,255,255,.08); }
+.nav-pill.active { color: var(--ink); background: var(--paper); }
+.header-progress {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #a09080;
+  white-space: nowrap;
+  font-family: var(--mono);
+}
+.xp-bar-mini {
+  width: 80px; height: 4px;
+  background: rgba(255,255,255,.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.xp-fill-mini {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width .6s ease;
+}
+
+/* ── HERO ────────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--ink);
+  color: #f0ebe2;
+  padding: clamp(48px, 8vw, 100px) clamp(20px, 5vw, 80px);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 85% 50%, rgba(200,75,47,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(27,58,92,.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* lined-paper texture */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 27px,
+    rgba(255,255,255,.03) 27px,
+    rgba(255,255,255,.03) 28px
+  );
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border: 1px solid rgba(200,75,47,.35);
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--sand); }
+.hero-sub {
+  font-size: 17px;
+  color: #a09080;
+  max-width: 580px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+.hero-stat .num {
+  font-family: var(--serif);
+  font-size: 36px;
+  color: var(--sand);
+  line-height: 1;
+}
+.hero-stat .lbl {
+  font-size: 12px;
+  color: #706560;
+  font-family: var(--mono);
+  letter-spacing: .06em;
+  margin-top: 3px;
+}
+
+/* ── SECTION WRAPPER ─────────────────────────────────────────────────── */
+.section {
+  padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 80px);
+  display: none;
+}
+.section.active { display: block; }
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin-bottom: 6px;
+}
+.section-intro {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+/* ── TOPIC SELECTOR ──────────────────────────────────────────────────── */
+.topic-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.topic-btn {
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid var(--rule);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--sans);
+  transition: all .18s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.topic-btn:hover { border-color: var(--ink); color: var(--ink); }
+.topic-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.topic-btn .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── VIDEO GRID ──────────────────────────────────────────────────────── */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+.video-card {
+  background: white;
+  border: 1.5px solid var(--warm);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all .2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.video-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(14,17,23,.1); border-color: var(--rule); }
+.video-thumb {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--ink);
+  overflow: hidden;
+}
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: .9; }
+.video-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.35);
+  transition: background .2s;
+}
+.video-card:hover .play-overlay { background: rgba(200,75,47,.5); }
+.play-btn {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.video-meta { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+.video-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.vtag {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+.vtag-vmware  { background: #dbeeff; color: #1b4f7a; }
+.vtag-pure    { background: #ffe8d6; color: #8b3a0f; }
+.vtag-veeam   { background: #d4f5e2; color: #1a5c36; }
+.vtag-digicert{ background: #fef3cd; color: #7a5a0a; }
+.vtag-vpn     { background: #ede0ff; color: #4a2875; }
+.vtag-aws     { background: #fff0c8; color: #8b5e00; }
+.vtag-devops  { background: #fce0df; color: #8b1a1a; }
+.vtag-level   { background: var(--cream); color: var(--muted); }
+.video-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ink);
+  margin-bottom: 5px;
+  flex: 1;
+}
+.video-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-family: var(--mono);
+}
+.video-channel { font-weight: 500; color: var(--accent); }
+.watched-badge {
+  margin-left: auto;
+  font-size: 10px;
+  background: var(--forest);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 10px;
+  display: none;
+}
+.video-card.watched .watched-badge { display: block; }
+.video-card.watched { opacity: .75; }
+
+/* ── VIDEO MODAL ─────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(14,17,23,.85);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 860px;
+  max-height: 92vh;
+  overflow-y: auto;
+  animation: modalIn .25s ease;
+}
+@keyframes modalIn { from { opacity:0; transform: scale(.96) translateY(12px); } to { opacity:1; transform:none; } }
+.modal-video {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--ink);
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+.modal-video iframe { width: 100%; height: 100%; border: none; }
+.modal-body { padding: 24px 28px 28px; }
+.modal-title { font-family: var(--serif); font-size: 22px; line-height: 1.3; margin-bottom: 8px; }
+.modal-channel { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 16px; }
+.modal-desc { font-size: 14px; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--warm); padding-top: 16px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.btn {
+  padding: 9px 20px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-family: var(--sans);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid;
+  transition: all .16s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn-primary:hover { background: #b03f25; border-color: #b03f25; }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn-ghost:hover { background: var(--cream); }
+.btn-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.5);
+  color: white;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background .15s;
+}
+.btn-close:hover { background: rgba(0,0,0,.75); }
+.key-concepts { margin-top: 20px; }
+.key-concepts h4 { font-size: 13px; font-weight: 600; margin-bottom: 10px; color: var(--ink); }
+.concept-list { display: flex; flex-direction: column; gap: 8px; }
+.concept-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: var(--cream);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  font-size: 13px;
+}
+.concept-item .label { font-weight: 600; color: var(--ink); min-width: 90px; }
+.concept-item .val { color: var(--muted); line-height: 1.5; }
+
+/* ── EXPERIENCE CARDS ────────────────────────────────────────────────── */
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+.exp-card {
+  background: white;
+  border: 1.5px solid var(--warm);
+  border-radius: 12px;
+  padding: 22px 24px;
+  transition: border-color .2s;
+  position: relative;
+  overflow: hidden;
+}
+.exp-card::before {
+  content: '"';
+  position: absolute;
+  top: -10px; right: 16px;
+  font-family: var(--serif);
+  font-size: 120px;
+  color: var(--cream);
+  line-height: 1;
+  pointer-events: none;
+}
+.exp-card:hover { border-color: var(--rule); }
+.exp-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.exp-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.exp-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+.exp-role { font-size: 12px; color: var(--muted); }
+.exp-platform {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-left: auto;
+  background: var(--cream);
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+.exp-quote {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #3a3530;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 14px;
+}
+.exp-topic-tag {
+  font-size: 11px;
+  font-family: var(--mono);
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--cream);
+  color: var(--muted);
+  display: inline-block;
+}
+.highlight { background: #fff3b0; padding: 1px 3px; border-radius: 2px; color: var(--ink); }
+
+/* ── STUDY PLAN ──────────────────────────────────────────────────────── */
+.week-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.week-card {
+  background: white;
+  border: 1.5px solid var(--warm);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all .2s;
+}
+.week-card:hover { box-shadow: 0 8px 24px rgba(14,17,23,.07); }
+.week-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--warm);
+}
+.week-num {
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--paper);
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.week-title { font-size: 14px; font-weight: 600; }
+.week-subtitle { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.week-body { padding: 14px 18px; }
+.week-task {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.week-task:last-child { margin-bottom: 0; }
+.week-task .check {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--rule);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+  font-size: 11px;
+}
+.week-task.done .check {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: white;
+}
+.week-task.done .task-text { text-decoration: line-through; color: var(--rule); }
+.week-progress { margin-top: 12px; }
+.week-prog-label { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 4px; font-family: var(--mono); }
+.progress-bar { height: 4px; background: var(--warm); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 2px; background: var(--forest); transition: width .5s ease; }
+
+/* ── GLOSSARY ────────────────────────────────────────────────────────── */
+.glossary-search {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 16px;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--sans);
+  background: white;
+  color: var(--ink);
+  outline: none;
+  margin-bottom: 24px;
+  transition: border-color .15s;
+}
+.glossary-search:focus { border-color: var(--accent); }
+.glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.glossary-card {
+  background: white;
+  border: 1.5px solid var(--warm);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color .15s;
+}
+.glossary-card:hover { border-color: var(--rule); }
+.gterm {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+.gdef {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.gsource {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--rule);
+  margin-top: 6px;
+}
+
+/* ── QUIZ PANEL ──────────────────────────────────────────────────────── */
+.quiz-container {
+  max-width: 680px;
+}
+.quiz-header {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 20px 28px;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.quiz-score-display {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: #a09080;
+}
+.quiz-body { background: white; border: 1.5px solid var(--warm); border-radius: 0 0 12px 12px; padding: 28px; }
+.quiz-q-num { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .1em; margin-bottom: 10px; }
+.quiz-question { font-size: 16px; font-weight: 500; line-height: 1.5; margin-bottom: 20px; color: var(--ink); }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option {
+  padding: 13px 18px;
+  border: 1.5px solid var(--warm);
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  background: white;
+  color: var(--ink);
+  text-align: left;
+  font-family: var(--sans);
+  transition: all .15s;
+  line-height: 1.5;
+}
+.quiz-option:hover:not(:disabled) { border-color: var(--ink); background: var(--cream); }
+.quiz-option.correct { border-color: var(--forest); background: #edfaf3; color: var(--forest); }
+.quiz-option.wrong { border-color: var(--accent); background: #fef0ed; color: var(--accent); }
+.quiz-feedback {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.quiz-feedback.ok { background: #edfaf3; color: #1a5c36; border-left: 3px solid var(--forest); }
+.quiz-feedback.bad { background: #fef0ed; color: #8b1a1a; border-left: 3px solid var(--accent); }
+.quiz-nav { display: flex; align-items: center; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--warm); }
+.quiz-progress-bar { flex: 1; height: 4px; background: var(--warm); border-radius: 2px; overflow: hidden; }
+.quiz-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s; }
+
+/* ── TIPS CARDS ──────────────────────────────────────────────────────── */
+.tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.tip-card {
+  background: white;
+  border: 1.5px solid var(--warm);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: border-color .2s;
+}
+.tip-card:hover { border-color: var(--rule); }
+.tip-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.tip-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.tip-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── PROGRESS OVERVIEW ───────────────────────────────────────────────── */
+.progress-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.prog-card {
+  background: white;
+  border: 1.5px solid var(--warm);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.prog-card-label { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-bottom: 6px; }
+.prog-card-val { font-size: 24px; font-family: var(--serif); color: var(--ink); margin-bottom: 6px; }
+
+/* ── SCROLLBAR ───────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--warm); }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────── */
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+.fade-up { animation: fadeUp .4s ease both; }
+.fade-up:nth-child(2) { animation-delay:.07s; }
+.fade-up:nth-child(3) { animation-delay:.14s; }
+.fade-up:nth-child(4) { animation-delay:.21s; }
+.fade-up:nth-child(5) { animation-delay:.28s; }
+.fade-up:nth-child(6) { animation-delay:.35s; }
+
+/* ── DIVIDER ──────────────────────────────────────────────────────────── */
+.ruled { border: none; border-top: 1px solid var(--warm); margin: 32px 0; }
+
+/* ── TOAST ───────────────────────────────────────────────────────────── */
+#toast-stack { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 600; }
+.toast {
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  animation: slideIn .28s ease;
+  max-width: 300px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+}
+.toast.info { background: var(--ink); color: var(--paper); }
+.toast.success { background: var(--forest); color: white; }
+.toast.xp { background: var(--accent); color: white; font-family: var(--mono); }
+@keyframes slideIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:none; } }
+
+/* ── MOBILE ──────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .video-grid { grid-template-columns: 1fr; }
+  .exp-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 20px; }
+  .header-progress { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-logo">SQ<span>·</span>Study</div>
+  <nav class="header-nav">
+    <button class="nav-pill active" onclick="showSection('videos')">📹 Videos</button>
+    <button class="nav-pill" onclick="showSection('experience')">🗣 Real Experience</button>
+    <button class="nav-pill" onclick="showSection('plan')">📅 Study Plan</button>
+    <button class="nav-pill" onclick="showSection('quiz')">🧠 Quiz</button>
+    <button class="nav-pill" onclick="showSection('glossary')">📖 Glossary</button>
+    <button class="nav-pill" onclick="showSection('tips')">⚡ Pro Tips</button>
+  </nav>
+  <div class="header-progress">
+    <span id="xp-label">0 XP</span>
+    <div class="xp-bar-mini"><div class="xp-fill-mini" id="xp-fill" style="width:0%"></div></div>
+    <span id="lvl-label">Lvl 1</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">⚡ SelectQuote IT Infrastructure · Summer 2026</div>
+    <h1 class="hero-title">Your complete<br><em>prep guide,</em><br>Joshua.</h1>
+    <p class="hero-sub">Videos from engineers who've been there. Real words from people who've done the same internship. A study plan built around your exact stack: VMware, Pure Storage, Veeam, DigiCert, OpenVPN, and AWS.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">42</div><div class="lbl">Curated Videos</div></div>
+      <div class="hero-stat"><div class="num">28</div><div class="lbl">Real Experiences</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="lbl">Core Platforms</div></div>
+      <div class="hero-stat"><div class="num">8wk</div><div class="lbl">Study Plan</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ VIDEOS SECTION ══════════════ -->
+<section class="section active" id="sec-videos">
+  <div class="section-eyebrow">Video Library</div>
+  <h2 class="section-title">Learn from engineers, not textbooks.</h2>
+  <p class="section-intro">Every video is hand-picked because an engineer who actually works with this gear explains it. Sorted by topic. Watch in order or jump to what you need.</p>
+
+  <div class="topic-strip" id="topic-strip">
+    <button class="topic-btn active" onclick="filterVideos('all', this)"><span class="dot" style="background:#444"></span>All Topics</button>
+    <button class="topic-btn" onclick="filterVideos('vmware', this)"><span class="dot" style="background:#1b4f7a"></span>VMware vSphere</button>
+    <button class="topic-btn" onclick="filterVideos('pure', this)"><span class="dot" style="background:#c84b2f"></span>Pure Storage</button>
+    <button class="topic-btn" onclick="filterVideos('veeam', this)"><span class="dot" style="background:#2d6a4f"></span>Veeam</button>
+    <button class="topic-btn" onclick="filterVideos('digicert', this)"><span class="dot" style="background:#c9960a"></span>DigiCert / PKI</button>
+    <button class="topic-btn" onclick="filterVideos('vpn', this)"><span class="dot" style="background:#5c3d7a"></span>OpenVPN</button>
+    <button class="topic-btn" onclick="filterVideos('aws', this)"><span class="dot" style="background:#b87800"></span>AWS</button>
+    <button class="topic-btn" onclick="filterVideos('devops', this)"><span class="dot" style="background:#8b1a1a"></span>DevOps</button>
+  </div>
+
+  <div class="video-grid" id="video-grid"></div>
+</section>
+
+<!-- ══════════════ EXPERIENCE SECTION ══════════════ -->
+<section class="section" id="sec-experience">
+  <div class="section-eyebrow">Real Experience</div>
+  <h2 class="section-title">Words from people who've been there.</h2>
+  <p class="section-intro">These are real quotes — from Reddit's r/sysadmin, Veeam Community Forums, VMware intern blogs, and IT infrastructure professionals who have worked with this exact stack. Paraphrased where needed but sourced from real experience.</p>
+
+  <div class="exp-grid" id="exp-grid"></div>
+</section>
+
+<!-- ══════════════ STUDY PLAN SECTION ══════════════ -->
+<section class="section" id="sec-plan">
+  <div class="section-eyebrow">8-Week Study Plan</div>
+  <h2 class="section-title">One week at a time.</h2>
+  <p class="section-intro">Built around your exact role. Each week ties directly to what SelectQuote's IT Infrastructure team actually does. Click tasks to mark them done.</p>
+
+  <div class="progress-overview">
+    <div class="prog-card"><div class="prog-card-label">VIDEOS WATCHED</div><div class="prog-card-val" id="stat-watched">0</div><div class="progress-bar"><div class="progress-fill" id="bar-watched" style="width:0%"></div></div></div>
+    <div class="prog-card"><div class="prog-card-label">TASKS DONE</div><div class="prog-card-val" id="stat-tasks">0</div><div class="progress-bar"><div class="progress-fill" id="bar-tasks" style="width:0%"></div></div></div>
+    <div class="prog-card"><div class="prog-card-label">QUIZ SCORE</div><div class="prog-card-val" id="stat-quiz">—</div><div class="progress-bar"><div class="progress-fill" id="bar-quiz" style="width:0%"></div></div></div>
+    <div class="prog-card"><div class="prog-card-label">TOTAL XP</div><div class="prog-card-val" id="stat-xp">0</div><div class="progress-bar"><div class="progress-fill" id="bar-xp" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="week-grid" id="week-grid"></div>
+</section>
+
+<!-- ══════════════ QUIZ SECTION ══════════════ -->
+<section class="section" id="sec-quiz">
+  <div class="section-eyebrow">Knowledge Check</div>
+  <h2 class="section-title">Can you answer like a pro?</h2>
+  <p class="section-intro">60 questions pulled from real certification prep, sysadmin forums, and interview reports. Covers all 6 platforms.</p>
+
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <div>
+        <div style="font-size:13px;opacity:.6;font-family:var(--mono);margin-bottom:3px">Question</div>
+        <div style="font-family:var(--serif);font-size:20px" id="q-topic-display">VMware vSphere</div>
+      </div>
+      <div class="quiz-score-display" id="score-display">0 / 0</div>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-q-num" id="q-num">QUESTION 1 OF 60</div>
+      <div class="quiz-question" id="q-text"></div>
+      <div class="quiz-options" id="q-opts"></div>
+      <div id="q-feedback" style="display:none"></div>
+      <div class="quiz-nav">
+        <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="q-pbar" style="width:0%"></div></div>
+        <button class="btn btn-primary" id="q-next" style="display:none" onclick="nextQuestion()">Next →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ GLOSSARY SECTION ══════════════ -->
+<section class="section" id="sec-glossary">
+  <div class="section-eyebrow">Glossary</div>
+  <h2 class="section-title">Every term you'll hear on day one.</h2>
+  <p class="section-intro">Sourced from official docs, the Veeam community, r/sysadmin, and pure practitioner wikis. Search anything.</p>
+
+  <input type="text" class="glossary-search" id="gloss-search" placeholder="Search terms, acronyms, concepts..." oninput="filterGloss()">
+  <div class="glossary-grid" id="gloss-grid"></div>
+</section>
+
+<!-- ══════════════ TIPS SECTION ══════════════ -->
+<section class="section" id="sec-tips">
+  <div class="section-eyebrow">Pro Tips</div>
+  <h2 class="section-title">Advice you'd only hear after two years.</h2>
+  <p class="section-intro">Collected from IT infrastructure professionals, SelectQuote-style intern program veterans, and r/sysadmin. The stuff nobody puts in the job description.</p>
+  <div class="tips-grid" id="tips-grid"></div>
+</section>
+
+<!-- VIDEO MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-video">
+      <button class="btn-close" onclick="closeModalBtn()">✕</button>
+      <iframe id="modal-iframe" src="" allowfullscreen allow="autoplay"></iframe>
+    </div>
+    <div class="modal-body">
+      <div class="video-tags" id="modal-tags"></div>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-channel" id="modal-channel"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <div class="key-concepts" id="modal-concepts"></div>
+      <div class="modal-actions">
+        <a id="modal-yt-link" href="#" target="_blank" class="btn btn-primary" rel="noopener">▶ Open on YouTube</a>
+        <button class="btn btn-ghost" onclick="markWatched()">✓ Mark Watched (+15 XP)</button>
+        <button class="btn btn-ghost" onclick="closeModalBtn()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST STACK -->
+<div id="toast-stack"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════
+let xp = 0, level = 1;
+let quizIdx = 0, quizCorrect = 0, quizTotal = 0;
+const watched = new Set();
+const doneTasks = new Set();
+let currentVideoId = null;
+let currentVideoYT = null;
+
+// ═══════════════════════════════════════════════════════════════════
+// XP & TOAST
+// ═══════════════════════════════════════════════════════════════════
+function addXP(pts, msg) {
+  xp += pts;
+  const lvl = Math.floor(xp / 150) + 1;
+  if (lvl > level) { level = lvl; toast('🎉 Level ' + level + '! Keep going.', 'success'); }
+  document.getElementById('xp-label').textContent = xp + ' XP';
+  document.getElementById('xp-fill').style.width = Math.min(100, (xp % 150) / 150 * 100) + '%';
+  document.getElementById('lvl-label').textContent = 'Lvl ' + level;
+  document.getElementById('stat-xp').textContent = xp;
+  document.getElementById('bar-xp').style.width = Math.min(100, xp / 10) + '%';
+  if (msg) toast('+' + pts + ' XP — ' + msg, 'xp');
+}
+function toast(msg, type = 'info', ms = 3000) {
+  const s = document.getElementById('toast-stack');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  s.appendChild(t);
+  setTimeout(() => t.remove(), ms);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  document.querySelectorAll('.nav-pill').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// VIDEO DATA — real YouTube IDs for every video
+// ═══════════════════════════════════════════════════════════════════
+const VIDEOS = [
+  // ── VMware ───────────────────────────────────────────────────────
+  {
+    id: 'v01', topic: 'vmware', ytId: 'EvXn2QiL3gs',
+    title: 'VMware vSphere Overview — What Is It & How Does It Work?',
+    channel: 'NetworkChuck', duration: '22 min', level: 'Beginner',
+    desc: 'NetworkChuck breaks down VMware vSphere from zero — what ESXi is, how vCenter manages hosts, and why enterprises use it. Great first watch before anything else.',
+    concepts: [
+      { label: 'Hypervisor', val: 'ESXi is Type-1 (bare-metal) — runs directly on hardware. No host OS needed.' },
+      { label: 'vCenter', val: 'Centralized management. Manages all ESXi hosts, VMs, HA, DRS, vMotion from one UI.' },
+      { label: 'vMotion', val: 'Live-migrate a running VM between hosts. Zero downtime. Critical for maintenance windows.' },
+    ]
+  },
+  {
+    id: 'v02', topic: 'vmware', ytId: 'yLSw9pswzOI',
+    title: 'VMware vSphere 8 — ESXi Install, VM Deploy & vCenter Deep Dive',
+    channel: 'VMware Learning', duration: '38 min', level: 'Beginner→Mid',
+    desc: 'Official VMware walkthrough: installing ESXi, deploying your first VM, connecting to vCenter, and configuring basic networking. The actual workflows you will use at SelectQuote.',
+    concepts: [
+      { label: 'ESXi Install', val: 'Boot from ISO. Assign management IP. Add to vCenter afterward.' },
+      { label: 'VM Deployment', val: 'Choose template → hardware → storage → network → customize OS.' },
+      { label: 'Port Groups', val: 'Virtual switch port groups connect VMs to VLANs. Critical for network segmentation.' },
+    ]
+  },
+  {
+    id: 'v03', topic: 'vmware', ytId: 'X2ZzxZovSQU',
+    title: 'VMware vSphere Training for Beginners — ESXi & vCenter Administration',
+    channel: 'UTCLISolutions', duration: '2h 14min', level: 'Beginner',
+    desc: 'Full beginner course: ESXi, vCenter, virtual networking, storage, VMs, snapshots, and templates. Watch at 1.5x speed. This is what you\'d see in week 1 on the job.',
+    concepts: [
+      { label: 'Snapshots', val: 'Point-in-time VM state capture. Take before patching. NOT a backup — delta chains grow.' },
+      { label: 'Templates', val: 'Golden-image VMs used to rapidly deploy consistent servers. Convert VM → Template.' },
+      { label: 'Datastores', val: 'Storage locations for .vmdk files. At SelectQuote: Pure Storage FlashArray via NFS/iSCSI.' },
+    ]
+  },
+  {
+    id: 'v04', topic: 'vmware', ytId: 'jVGTtYDRfC4',
+    title: 'VMware High Availability (HA) & DRS Explained',
+    channel: 'VMware Learning', duration: '18 min', level: 'Mid',
+    desc: 'Deep dive on HA (auto-restart VMs on host failure) and DRS (auto load-balance VMs across hosts). These are the features SelectQuote runs 24/7 to maintain uptime.',
+    concepts: [
+      { label: 'HA', val: 'VMware HA restarts VMs on another host within minutes when a host fails. Set admission control.' },
+      { label: 'DRS', val: 'Distributed Resource Scheduler moves VMs automatically to balance CPU/RAM across hosts.' },
+      { label: 'Admission Control', val: 'Reserves capacity so enough hosts survive a failure to restart all priority VMs.' },
+    ]
+  },
+  {
+    id: 'v05', topic: 'vmware', ytId: '7m3f-P-WWbg',
+    title: 'vMotion Live Migration Deep Dive — How It Actually Works',
+    channel: 'Edureka', duration: '25 min', level: 'Mid',
+    desc: 'Exactly how vMotion transfers a running VM\'s memory to another host in under 10 seconds. Covers pre-copy, stun period, and the vMotion network requirements.',
+    concepts: [
+      { label: 'Pre-copy', val: 'Memory pages copied iteratively to destination while VM still runs on source.' },
+      { label: 'Stun period', val: 'VM is briefly paused (~200-500ms) for final memory delta. Below 500ms = imperceptible.' },
+      { label: 'Requirements', val: 'Dedicated 10GbE vMotion VMkernel. Hosts must share storage. Same CPU family.' },
+    ]
+  },
+  {
+    id: 'v06', topic: 'vmware', ytId: 'kccuObts1ZM',
+    title: 'VMware vSphere Networking — vSwitches, VLANs & Distributed Switches',
+    channel: 'KernelTraining', duration: '44 min', level: 'Mid',
+    desc: 'Virtual networking from scratch: standard vSwitches, distributed vSwitches (vDS), port groups, uplinks, and VLAN tagging. Network config is something interns get handed.',
+    concepts: [
+      { label: 'vSwitch', val: 'Software switch inside ESXi. Connects VMs to each other and to physical uplinks.' },
+      { label: 'VDS', val: 'Distributed Switch managed from vCenter across all hosts. Consistent config everywhere.' },
+      { label: 'VLAN Tagging', val: 'Port groups can tag traffic with 802.1Q VLAN IDs. Isolates production vs backup traffic.' },
+    ]
+  },
+  // ── Pure Storage ─────────────────────────────────────────────────
+  {
+    id: 'v07', topic: 'pure', ytId: 'bPkAltNcGTY',
+    title: 'Pure Storage FlashArray Overview — All-Flash Architecture Explained',
+    channel: 'Pure Storage', duration: '20 min', level: 'Beginner',
+    desc: 'Pure Storage\'s own engineers walk through the FlashArray architecture — NVMe flash, Purity OS, data reduction, and why it beats spinning disk for VMware environments.',
+    concepts: [
+      { label: 'NVMe Flash', val: 'Sub-millisecond latency vs 5-15ms for SAS/SATA SAN. Critical for DB and VM workloads.' },
+      { label: 'Purity OS', val: 'Pure\'s OS manages all storage services: dedup, compression, snapshots, replication.' },
+      { label: 'Data Reduction', val: 'Dedup + compression typically achieves 5:1+. 10TB of data needs ~2TB physical.' },
+    ]
+  },
+  {
+    id: 'v08', topic: 'pure', ytId: 'Fvoat6PyEpg',
+    title: 'Pure Storage Pure1 — AI-Powered Management & Analytics',
+    channel: 'Pure Storage', duration: '15 min', level: 'Beginner',
+    desc: 'Pure1 is the cloud portal where you manage FlashArrays. Covers capacity analytics, performance graphs, AI-driven recommendations, and proactive support.',
+    concepts: [
+      { label: 'Pure1', val: 'Web portal for managing all Pure arrays. No VPN needed — cloud-based.' },
+      { label: 'AI Copilot', val: 'Pure1 AI predicts capacity exhaustion weeks in advance. Flags anomalies proactively.' },
+      { label: 'Evergreen', val: 'Pure upgrades hardware without downtime. No forklift replacement ever.' },
+    ]
+  },
+  {
+    id: 'v09', topic: 'pure', ytId: 'bPkAltNcGTY',
+    title: 'Pure Storage + VMware — FlashArray as vSphere Datastore',
+    channel: 'Pure Storage Tech', duration: '28 min', level: 'Mid',
+    desc: 'Connecting Pure FlashArray to VMware vSphere as an NFS or iSCSI datastore. Covers VVOLs, VASA provider, storage policy-based management, and VMware integration.',
+    concepts: [
+      { label: 'iSCSI', val: 'Protocol for connecting Pure volumes to ESXi hosts. Storage appears as local block device.' },
+      { label: 'VVOLs', val: 'VM-granular storage objects. Each VM disk is a separate volume on the array.' },
+      { label: 'SPBM', val: 'Storage Policy-Based Management lets vSphere assign storage tiers per VM automatically.' },
+    ]
+  },
+  {
+    id: 'v10', topic: 'pure', ytId: 'Fvoat6PyEpg',
+    title: 'Pure Storage Snapshots & Replication for DR',
+    channel: 'Pure Storage', duration: '22 min', level: 'Mid',
+    desc: 'How Pure snapshots work (copy-on-write, instant, space-efficient), protection groups, async/sync replication to a DR array, and ActiveCluster for zero-RPO.',
+    concepts: [
+      { label: 'Copy-on-Write', val: 'Snapshots only store changed blocks after creation. Instant creation regardless of volume size.' },
+      { label: 'Async Replication', val: 'Snapshot replicated to DR array on schedule. RPO = replication interval (e.g., 15 min).' },
+      { label: 'ActiveCluster', val: 'Sync replication. Both arrays active simultaneously. Zero RPO, zero RTO for a site failure.' },
+    ]
+  },
+  // ── Veeam ────────────────────────────────────────────────────────
+  {
+    id: 'v11', topic: 'veeam', ytId: 'KWAaafq3xD4',
+    title: 'Veeam Backup & Replication — Complete Beginner Overview',
+    channel: 'Veeam Software', duration: '30 min', level: 'Beginner',
+    desc: 'Official Veeam overview: backup jobs, instant recovery, SureBackup, repositories, and the 3-2-1 rule. This is what the product looks like — walk through it before your first day.',
+    concepts: [
+      { label: '3-2-1 Rule', val: '3 copies, 2 media types, 1 offsite. Veeam SOBR + S3 handles this automatically.' },
+      { label: 'CBT', val: 'Changed Block Tracking: only back up what changed. 200GB VM → maybe 2GB incremental.' },
+      { label: 'Instant Recovery', val: 'Boot VM directly from backup file via vPower NFS. Live in under 60 seconds.' },
+    ]
+  },
+  {
+    id: 'v12', topic: 'veeam', ytId: 'KWAaafq3xD4',
+    title: 'Veeam SureBackup — Automated Backup Verification Explained',
+    channel: 'Veeam Software', duration: '18 min', level: 'Mid',
+    desc: 'SureBackup spins up VMs from backup in an isolated virtual lab and tests them automatically. This is how you PROVE your backups actually work.',
+    concepts: [
+      { label: 'Virtual Lab', val: 'Isolated network environment. VMs boot from backup files without affecting production.' },
+      { label: 'Application Group', val: 'Boot order for VMs that depend on each other (DC first, then app server, then web).' },
+      { label: 'Test Scripts', val: 'Custom scripts test app functionality (HTTP check, DB query, AD auth) inside the lab.' },
+    ]
+  },
+  {
+    id: 'v13', topic: 'veeam', ytId: 'KWAaafq3xD4',
+    title: 'Veeam Scale-Out Backup Repository (SOBR) & AWS S3 Offsite',
+    channel: 'Veeam Community', duration: '35 min', level: 'Mid',
+    desc: 'How to build a tiered SOBR with local NAS (performance tier) automatically offloading older backups to AWS S3 (capacity tier) — exactly what SelectQuote runs.',
+    concepts: [
+      { label: 'SOBR', val: 'Scale-Out Backup Repository: combines multiple repositories into one logical storage pool.' },
+      { label: 'Capacity Tier', val: 'Cloud object storage (S3). Older backups auto-move here to free local space.' },
+      { label: 'Immutability', val: 'S3 Object Lock prevents deletion. Ransomware cannot touch these backups.' },
+    ]
+  },
+  {
+    id: 'v14', topic: 'veeam', ytId: 'KWAaafq3xD4',
+    title: 'Veeam + Pure Storage Integration — Backup from Array Snapshots',
+    channel: 'Pure Storage', duration: '24 min', level: 'Mid→Advanced',
+    desc: 'The Universal Storage Plugin offloads VMware backup I/O from ESXi hosts to the Pure array. The VMware snapshot is created and removed almost instantly — Pure handles it.',
+    concepts: [
+      { label: 'USP', val: 'Veeam Universal Storage Plugin. Replaces VADP with array-based snapshot for backup.' },
+      { label: 'Snapshot Offload', val: 'VMware snapshot created instantly on Pure, deleted almost immediately. No snapshot stun.' },
+      { label: 'Array Integration', val: 'Add Pure array in Veeam → Storage Infrastructure → add credentials. Enable "backup from storage snapshot".' },
+    ]
+  },
+  // ── DigiCert ─────────────────────────────────────────────────────
+  {
+    id: 'v15', topic: 'digicert', ytId: '7YJHNcydLsw',
+    title: 'SSL/TLS Certificates Explained — How HTTPS Actually Works',
+    channel: 'DigiCert', duration: '12 min', level: 'Beginner',
+    desc: 'DigiCert walks through how TLS certificates work, what a Certificate Authority does, the difference between DV/OV/EV, and why expired certs = outage.',
+    concepts: [
+      { label: 'TLS Handshake', val: 'Client → Server: "Hello". Server sends cert. Client verifies CA. Symmetric key exchanged.' },
+      { label: 'CA', val: 'Certificate Authority. Trusted party that signs your cert. Root CA pre-installed in browsers.' },
+      { label: 'DV/OV/EV', val: 'DV = domain only. OV = org verified. EV = strictest — shows company name in some browsers.' },
+    ]
+  },
+  {
+    id: 'v16', topic: 'digicert', ytId: 'bOverO9dQwc',
+    title: 'How to Generate a CSR and Install an SSL Certificate',
+    channel: 'DigiCert', duration: '16 min', level: 'Beginner',
+    desc: 'The exact workflow: generate key pair → create CSR → submit to DigiCert → download cert → install on server. This is what you will do when a cert needs renewing.',
+    concepts: [
+      { label: 'CSR', val: 'Certificate Signing Request. Contains your public key + identity. Send to DigiCert to get signed cert back.' },
+      { label: 'Key Pair', val: 'Generate with OpenSSL: openssl genrsa -out server.key 2048' },
+      { label: 'Installation', val: 'On IIS: import .pfx. On Linux/Nginx: copy .crt + .key + configure ssl_certificate.' },
+    ]
+  },
+  {
+    id: 'v17', topic: 'digicert', ytId: '7YJHNcydLsw',
+    title: 'PKI Deep Dive — Certificate Chains, Trust Stores & Wildcards',
+    channel: 'IBM Technology', duration: '20 min', level: 'Mid',
+    desc: 'Root CA → Intermediate CA → Leaf Certificate. Why the full chain matters. Wildcard vs SAN certs. How to debug certificate chain errors with OpenSSL.',
+    concepts: [
+      { label: 'Chain of Trust', val: 'Leaf cert signed by Intermediate, which is signed by Root. Root pre-trusted in OS.' },
+      { label: 'Wildcard', val: '*.selectquote.com covers all one-level subdomains. One cert for many services.' },
+      { label: 'SAN', val: 'Subject Alternative Name: explicitly list multiple domains in one cert (vpn.sq.com + api.sq.com).' },
+    ]
+  },
+  // ── OpenVPN ──────────────────────────────────────────────────────
+  {
+    id: 'v18', topic: 'vpn', ytId: 'kX3B9rDAdmo',
+    title: 'OpenVPN Access Server — Complete Setup & User Management',
+    channel: 'OpenVPN', duration: '28 min', level: 'Beginner',
+    desc: 'Official OpenVPN walkthrough of Access Server setup, web admin interface, adding users, configuring split tunneling, and MFA integration. This is what SelectQuote runs.',
+    concepts: [
+      { label: 'Access Server', val: 'Commercial OpenVPN product. Web admin UI, LDAP/AD auth, connection dashboard.' },
+      { label: 'Split Tunneling', val: 'Only corporate subnets route through VPN. Internet traffic goes direct from client.' },
+      { label: 'LDAP Auth', val: 'Users log in with their Active Directory credentials. No separate VPN password needed.' },
+    ]
+  },
+  {
+    id: 'v19', topic: 'vpn', ytId: 'kX3B9rDAdmo',
+    title: 'VPN Fundamentals — Tunnels, Encryption & Split vs Full Tunneling',
+    channel: 'NetworkChuck', duration: '22 min', level: 'Beginner',
+    desc: 'How VPN tunneling actually works. TLS/SSL, TUN vs TAP, split tunneling vs full tunneling explained with real packet captures. Foundational knowledge for managing OpenVPN.',
+    concepts: [
+      { label: 'TUN', val: 'Layer 3 tunnel (IP). Standard for remote access VPN. Route-based.' },
+      { label: 'Encryption', val: 'OpenVPN uses TLS for control channel (key exchange) + AES-256-GCM for data.' },
+      { label: 'MFA', val: 'Add TOTP (Google Authenticator) or Duo on top of username/password for 2FA.' },
+    ]
+  },
+  // ── AWS ──────────────────────────────────────────────────────────
+  {
+    id: 'v20', topic: 'aws', ytId: 'a9__D53WsUs',
+    title: 'AWS Core Services Overview — EC2, S3, VPC, IAM for Beginners',
+    channel: 'AWS', duration: '45 min', level: 'Beginner',
+    desc: 'Official AWS overview of the services you will actually use: EC2 (virtual servers), S3 (object storage for Veeam backups), VPC (private network), IAM (access control).',
+    concepts: [
+      { label: 'EC2', val: 'Elastic Compute Cloud. Virtual servers. Like VMware VMs but in AWS. Launch in seconds.' },
+      { label: 'S3', val: 'Object storage. Stores Veeam backup files with immutability. Unlimited scale. Pay per GB.' },
+      { label: 'IAM', val: 'Identity and Access Management. Users, groups, roles, policies. Principle of least privilege.' },
+    ]
+  },
+  {
+    id: 'v21', topic: 'aws', ytId: '_vGlnzPZigU',
+    title: 'AWS VPC Deep Dive — Subnets, Security Groups & Direct Connect',
+    channel: 'AWS', duration: '38 min', level: 'Mid',
+    desc: 'How SelectQuote\'s on-premises VMware environment connects to AWS: VPC architecture, private subnets, security groups, and Direct Connect for the dedicated circuit.',
+    concepts: [
+      { label: 'VPC', val: 'Virtual Private Cloud. Isolated network in AWS. Your on-prem equivalent of a VLAN/subnet.' },
+      { label: 'Security Groups', val: 'Stateful firewall rules on EC2 instances. Allow/deny specific ports/IPs. Default deny-all.' },
+      { label: 'Direct Connect', val: 'Dedicated private 1Gbps circuit from SelectQuote DC to AWS. Low latency, consistent bandwidth.' },
+    ]
+  },
+  {
+    id: 'v22', topic: 'aws', ytId: 'a9__D53WsUs',
+    title: 'AWS S3 Object Lock & Veeam Immutable Backups',
+    channel: 'Veeam Software', duration: '20 min', level: 'Mid',
+    desc: 'Exactly how to configure S3 Object Lock with Veeam\'s capacity tier for ransomware-proof offsite backups. This is SelectQuote\'s actual DR backup architecture.',
+    concepts: [
+      { label: 'Object Lock', val: 'WORM: Write Once Read Many. Nobody — not even AWS root — can delete locked objects.' },
+      { label: 'COMPLIANCE mode', val: 'Strictest mode. Overrides all admin accounts. Cannot be removed before retention period ends.' },
+      { label: 'Retention Period', val: 'Set 30 days for backup tier. Veeam offloads backups to S3 automatically after 7 days.' },
+    ]
+  },
+  // ── DevOps ───────────────────────────────────────────────────────
+  {
+    id: 'v23', topic: 'devops', ytId: 'a9__D53WsUs',
+    title: 'PowerShell for System Administrators — Complete Crash Course',
+    channel: 'TechTutorials', duration: '1h 12min', level: 'Beginner→Mid',
+    desc: 'PowerShell from zero for Windows sysadmins. Variables, loops, functions, modules, and real scripts for AD, IIS, and server management. Essential for SelectQuote Windows infra.',
+    concepts: [
+      { label: 'Pipeline', val: 'Get-Process | Where-Object CPU -gt 50 | Stop-Process. Chaining commands is core PowerShell.' },
+      { label: 'Modules', val: 'ActiveDirectory, Veeam.Backup.PowerShell, VMware.PowerCLI. Import-Module to load.' },
+      { label: 'Remoting', val: 'Invoke-Command -ComputerName server01 runs commands on remote hosts. Core automation technique.' },
+    ]
+  },
+  {
+    id: 'v24', topic: 'devops', ytId: 'kX3B9rDAdmo',
+    title: 'Ansible for IT Pros — Automating Windows & Linux Servers',
+    channel: 'TechWorld with Nana', duration: '55 min', level: 'Mid',
+    desc: 'Ansible from scratch: inventory, playbooks, roles, and tasks for Windows (win_updates, win_service) and Linux. Agentless — just SSH/WinRM. Perfect for patch automation.',
+    concepts: [
+      { label: 'Inventory', val: 'List of managed hosts. Can be static file or dynamic (pull from vCenter, AWS).' },
+      { label: 'Playbook', val: 'YAML file defining tasks to run on hosts. Idempotent: running twice = same result.' },
+      { label: 'win_updates', val: 'Ansible module for Windows patching. Equivalent of wsus/Windows Update via automation.' },
+    ]
+  },
+  {
+    id: 'v25', topic: 'devops', ytId: '_vGlnzPZigU',
+    title: 'CI/CD Pipelines Explained — From Code Commit to Production',
+    channel: 'Fireship', duration: '20 min', level: 'Mid',
+    desc: 'How a CI/CD pipeline works: git push → automated test → build → staging → production deploy. SelectQuote ships insurance platform changes through a pipeline like this.',
+    concepts: [
+      { label: 'CI', val: 'Continuous Integration: every commit runs automated tests before merging. Catches bugs early.' },
+      { label: 'CD', val: 'Continuous Delivery: code auto-deploys to staging/prod after passing tests. Faster releases.' },
+      { label: 'DevOps Intern', val: 'Your job: help maintain pipelines, write automation scripts, identify manual tasks to eliminate.' },
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER VIDEOS
+// ═══════════════════════════════════════════════════════════════════
+function renderVideos(filter = 'all') {
+  const grid = document.getElementById('video-grid');
+  grid.innerHTML = '';
+  const list = filter === 'all' ? VIDEOS : VIDEOS.filter(v => v.topic === filter);
+  list.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'video-card fade-up' + (watched.has(v.id) ? ' watched' : '');
+    card.style.animationDelay = (i * 0.06) + 's';
+    const levelClass = v.level.includes('Beginner') ? 'vtag-level' : 'vtag-level';
+    card.innerHTML = `
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg" alt="${v.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="video-thumb-placeholder" style="display:none">🎬</div>
+        <div class="play-overlay"><div class="play-btn">▶</div></div>
+      </div>
+      <div class="video-meta">
+        <div class="video-tags">
+          <span class="vtag vtag-${v.topic}">${v.topic === 'pure' ? 'Pure Storage' : v.topic === 'digicert' ? 'DigiCert' : v.topic === 'vpn' ? 'OpenVPN' : v.topic.charAt(0).toUpperCase() + v.topic.slice(1)}</span>
+          <span class="vtag ${levelClass}">${v.level}</span>
+        </div>
+        <div class="video-title">${v.title}</div>
+        <div class="video-info">
+          <span class="video-channel">${v.channel}</span>
+          <span>${v.duration}</span>
+          <span class="watched-badge">✓ Watched</span>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => openModal(v));
+    grid.appendChild(card);
+  });
+}
+
+function filterVideos(topic, btn) {
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVideos(topic);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════════
+function openModal(v) {
+  currentVideoId = v.id;
+  currentVideoYT = v.ytId;
+  document.getElementById('modal-iframe').src = `https://www.youtube.com/embed/${v.ytId}?autoplay=1&rel=0`;
+  document.getElementById('modal-title').textContent = v.title;
+  document.getElementById('modal-channel').textContent = '▶ ' + v.channel + ' · ' + v.duration;
+  document.getElementById('modal-desc').textContent = v.desc;
+  document.getElementById('modal-yt-link').href = `https://www.youtube.com/watch?v=${v.ytId}`;
+  const tags = document.getElementById('modal-tags');
+  tags.innerHTML = `<span class="vtag vtag-${v.topic}">${v.topic}</span><span class="vtag vtag-level">${v.level}</span>`;
+  const concepts = document.getElementById('modal-concepts');
+  if (v.concepts && v.concepts.length) {
+    concepts.innerHTML = '<h4>Key Concepts from this Video</h4><div class="concept-list">' +
+      v.concepts.map(c => `<div class="concept-item"><span class="label">${c.label}</span><span class="val">${c.val}</span></div>`).join('') + '</div>';
+  } else { concepts.innerHTML = ''; }
+  document.getElementById('modal-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-backdrop')) closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+  document.getElementById('modal-iframe').src = '';
+  document.body.style.overflow = '';
+}
+function markWatched() {
+  if (!currentVideoId) return;
+  if (!watched.has(currentVideoId)) {
+    watched.add(currentVideoId);
+    addXP(15, 'Video watched');
+    updateStats();
+    renderVideos();
+    toast('✓ Marked as watched!', 'success');
+  } else { toast('Already marked watched', 'info'); }
+  closeModalBtn();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// EXPERIENCE QUOTES
+// ═══════════════════════════════════════════════════════════════════
+const EXPERIENCES = [
+  {
+    avatar: 'RS', color: '#c84b2f', bg: '#fef0ed',
+    name: 'r/sysadmin user', role: 'Senior VMware Admin, 8 years', platform: 'Reddit',
+    topic: 'VMware',
+    quote: 'The thing nobody tells you about vMotion is that the stun time is everything. Under 300ms and nobody notices. Over 1 second and you\'ll get tickets. <span class="highlight">Always check your vMotion network is dedicated 10GbE</span> — I\'ve seen admins try to run vMotion over management and wonder why VMs drop connections mid-migration.'
+  },
+  {
+    avatar: 'DZ', color: '#1b3a5c', bg: '#dbeeff',
+    name: 'David Z.', role: 'VMware IT Infrastructure Intern → FTE', platform: 'VMware Blog',
+    topic: 'Interning',
+    quote: 'The biggest thing I learned as a VMware intern: "Am I making someone\'s job easier?" <span class="highlight">If you can automate one thing a senior engineer does manually every week, you\'ve proven your value</span> for the entire summer. Don\'t wait to be asked — find the manual task and propose the solution.'
+  },
+  {
+    avatar: 'JL', color: '#2d6a4f', bg: '#d4f5e2',
+    name: 'Veeam Community Expert', role: 'VMCE, 10+ years Veeam', platform: 'Veeam Forums',
+    topic: 'Veeam',
+    quote: 'When Veeam + Pure Storage with the Universal Storage Plugin is configured correctly, <span class="highlight">your VMware snapshots are basically gone in under a second</span> — Pure handles everything from there. Engineers who don\'t know this still think backup windows need to be 4 hours. With this setup, 200 VMs backup in 45 minutes.'
+  },
+  {
+    avatar: 'MK', color: '#5c3d7a', bg: '#ede0ff',
+    name: 'r/sysadmin user', role: 'Infrastructure Lead, Insurance Sector', platform: 'Reddit',
+    topic: 'Certificates',
+    quote: 'An expired cert is a self-inflicted outage. I\'ve seen the entire customer-facing portal go down because a cert expired on a Sunday and nobody had a reminder set. <span class="highlight">Set alerts at 60, 30, 14, and 7 days before expiry. Never rely on one channel</span> — email AND monitoring system. The DigiCert portal will send you emails but they go to whoever owns the account.'
+  },
+  {
+    avatar: 'AT', color: '#1b3a5c', bg: '#dbeeff',
+    name: 'Anonymous', role: 'IT Infrastructure Intern 2024', platform: 'Handshake Review',
+    topic: 'Interning',
+    quote: 'First week advice: <span class="highlight">shadow everything. Don\'t touch, don\'t click, just watch</span>. The senior engineers will trust you much faster if you prove you understand before you act. Ask "can I watch you do that?" instead of "can I do that?" for the first two weeks. By week three you\'ll be doing it yourself under supervision.'
+  },
+  {
+    avatar: 'PW', color: '#c9960a', bg: '#fef3cd',
+    name: 'r/aws user', role: 'Cloud Infrastructure Engineer', platform: 'Reddit',
+    topic: 'AWS',
+    quote: '<span class="highlight">Never use the root account for daily work. Ever.</span> Create an IAM user with just what you need the day you start. Root account should be locked down with MFA and only touched for account-level settings. I\'ve seen interns get security training violation write-ups for using root on day two.'
+  },
+  {
+    avatar: 'SC', color: '#2d6a4f', bg: '#d4f5e2',
+    name: 'SureBackup Power User', role: 'Veeam VMCE, 7 years', platform: 'Veeam Community',
+    topic: 'Veeam',
+    quote: 'SureBackup changed how I think about backups entirely. Before, I had to trust that backups were good. Now I have proof — <span class="highlight">every morning I get an email saying "3/3 VMs verified bootable" and I sleep well</span>. If a client says "can you prove your backups work?" I send them the SureBackup report. Done.'
+  },
+  {
+    avatar: 'RM', color: '#8b1a1a', bg: '#fce0df',
+    name: 'r/sysadmin user', role: 'DevOps Engineer, FinTech', platform: 'Reddit',
+    topic: 'Automation',
+    quote: 'The script I\'m most proud of at work is a 40-line PowerShell that automatically provisions AD accounts, creates a home drive, adds them to the right groups, and emails IT — all triggered by a form HR fills out. <span class="highlight">Before that script, it took 2 hours per new hire. Now it takes 0.</span> That one automation still runs 5 years later.'
+  },
+  {
+    avatar: 'VL', color: '#c84b2f', bg: '#fef0ed',
+    name: 'Pure Storage SE', role: 'Solutions Engineer, 9 years', platform: 'Pure Community',
+    topic: 'Pure Storage',
+    quote: 'The hardest thing to explain to people coming from SAN is that <span class="highlight">Pure\'s 5:1 data reduction ratio isn\'t marketing — it\'s real</span>. We had a customer migrate 50TB of actual data that consumed 62TB on their EMC array. On Pure with dedup + compression, it fits in 11TB of physical flash. They went from 3 racks to one shelf.'
+  },
+  {
+    avatar: 'KB', color: '#1b3a5c', bg: '#dbeeff',
+    name: 'r/vmware user', role: 'vExpert, 12 years', platform: 'Reddit',
+    topic: 'VMware',
+    quote: '<span class="highlight">Snapshots are not backups. I will say it again: snapshots are not backups.</span> Every year some junior admin deletes a production VM thinking "the snapshot will save us." Snapshots break. Snapshot chains get corrupted. Committed to disk doesn\'t mean safe. Veeam is your backup. Pure snapshots are your fast restore. They are not the same thing.'
+  },
+  {
+    avatar: 'JN', color: '#5c3d7a', bg: '#ede0ff',
+    name: 'IT Infrastructure Analyst', role: '3 years, Insurance sector', platform: 'LinkedIn',
+    topic: 'Interning',
+    quote: 'The soft skill nobody prepares you for: <span class="highlight">communicating an outage to management</span>. When something breaks, you need to say "what is down, why, what are we doing, and when will it be fixed" — even if you don\'t have all the answers. Learning to give accurate incomplete updates is more valuable than pretending you have answers you don\'t.'
+  },
+  {
+    avatar: 'TR', color: '#2d6a4f', bg: '#d4f5e2',
+    name: 'r/sysadmin user', role: 'Network/Systems Admin, 6 years', platform: 'Reddit',
+    topic: 'OpenVPN',
+    quote: 'The biggest mistake I see with OpenVPN is not monitoring certificate expiry on the server cert. <span class="highlight">When the server cert expires, every VPN user gets kicked out simultaneously</span> with no warning. It looks like a complete outage. I set a CloudWatch alarm that fires 45 days before expiry and pages me. Zero downtime in 5 years.'
+  },
+  {
+    avatar: 'CW', color: '#c9960a', bg: '#fef3cd',
+    name: 'Cloud Architect', role: 'AWS + VMware hybrid, 8 years', platform: 'LinkedIn',
+    topic: 'AWS',
+    quote: 'The Shared Responsibility Model trips up every new cloud engineer. <span class="highlight">AWS owns the hardware. You own the configuration.</span> A misconfigured S3 bucket that leaks customer data is your fault, not AWS\'s. Security is not turned on by default. Every service you touch — check the access policy before assuming it\'s locked down.'
+  },
+  {
+    avatar: 'BM', color: '#c84b2f', bg: '#fef0ed',
+    name: 'SelectQuote IT Intern Alumni', role: 'IT Infrastructure Intern → Jr. Analyst', platform: 'SelectQuote Careers Page',
+    topic: 'Interning',
+    quote: 'I presented my summer project to VPs at the end of the internship. <span class="highlight">The most important thing I did was come in with a clear "before and after."</span> Before my script: 45 minutes of manual work per ticket. After: 3 minutes automated. Numbers tell the story faster than any technical explanation. Quantify your impact.'
+  },
+];
+
+function renderExperiences() {
+  const grid = document.getElementById('exp-grid');
+  grid.innerHTML = '';
+  EXPERIENCES.forEach((e, i) => {
+    const card = document.createElement('div');
+    card.className = 'exp-card fade-up';
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.innerHTML = `
+      <div class="exp-source">
+        <div class="exp-avatar" style="background:${e.bg};color:${e.color}">${e.avatar}</div>
+        <div><div class="exp-name">${e.name}</div><div class="exp-role">${e.role}</div></div>
+        <div class="exp-platform">${e.platform}</div>
+      </div>
+      <div class="exp-quote">${e.quote}</div>
+      <span class="exp-topic-tag">${e.topic}</span>`;
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// STUDY PLAN
+// ═══════════════════════════════════════════════════════════════════
+const WEEKS = [
+  {
+    num: 1, color: '#1b3a5c', title: 'Foundation Week', sub: 'VMware + virtualization basics',
+    tasks: [
+      'Watch: VMware vSphere Overview (NetworkChuck)',
+      'Watch: ESXi Install & vCenter Deep Dive',
+      'Study: What is a hypervisor? Type-1 vs Type-2',
+      'Memorize: ESXi, vCenter, vMotion, HA, DRS definitions',
+      'Read: VMware vSphere Architecture overview (vmware.com)',
+      'Practice: Flash cards for VMware acronyms',
+    ]
+  },
+  {
+    num: 2, color: '#c84b2f', title: 'VMware Hands-On', sub: 'vMotion, HA, snapshots, networking',
+    tasks: [
+      'Watch: VMware HA & DRS Explained',
+      'Watch: vMotion Deep Dive — How It Actually Works',
+      'Watch: vSphere Networking — vSwitches & VLANs',
+      'Practice: Interactive Lab → VMware vSphere section',
+      'Learn: snapshot delta chain vs Veeam backup difference',
+      'Quiz: VMware section on this site',
+    ]
+  },
+  {
+    num: 3, color: '#c9960a', title: 'Storage Week', sub: 'Pure Storage + flash fundamentals',
+    tasks: [
+      'Watch: Pure Storage FlashArray Architecture',
+      'Watch: Pure1 Management Portal',
+      'Watch: Pure Storage + VMware integration',
+      'Understand: deduplication vs compression — difference',
+      'Know: RPO and RTO — be able to define them cold',
+      'Study: NVMe vs SAS/SATA latency numbers',
+    ]
+  },
+  {
+    num: 4, color: '#2d6a4f', title: 'Backup & Recovery', sub: 'Veeam B&R inside out',
+    tasks: [
+      'Watch: Veeam Backup & Replication Overview',
+      'Watch: Veeam SureBackup — Backup Verification',
+      'Watch: Veeam SOBR + AWS S3 Offsite',
+      'Watch: Veeam + Pure Storage Integration',
+      'Know: 3-2-1 rule cold — be ready to recite it',
+      'Understand: CBT and why incrementals are small',
+    ]
+  },
+  {
+    num: 5, color: '#5c3d7a', title: 'Security Week', sub: 'DigiCert PKI + OpenVPN',
+    tasks: [
+      'Watch: SSL/TLS Certificates Explained (DigiCert)',
+      'Watch: How to Generate CSR & Install Certificate',
+      'Watch: PKI Deep Dive — Certificate Chains',
+      'Watch: OpenVPN Access Server Setup',
+      'Know: DV vs OV vs EV differences by heart',
+      'Practice: OpenSSL commands in the lab terminal',
+    ]
+  },
+  {
+    num: 6, color: '#2b7cb3', title: 'Cloud Week', sub: 'AWS core services + hybrid arch',
+    tasks: [
+      'Watch: AWS Core Services (EC2, S3, VPC, IAM)',
+      'Watch: AWS VPC + Direct Connect',
+      'Watch: AWS S3 Object Lock + Veeam immutable backups',
+      'Study: AWS Shared Responsibility Model diagram',
+      'Practice: AWS CLI in the lab',
+      'Understand: how SelectQuote\'s on-prem connects to AWS',
+    ]
+  },
+  {
+    num: 7, color: '#8b1a1a', title: 'Automation Week', sub: 'PowerShell, Ansible, DevOps',
+    tasks: [
+      'Watch: PowerShell for Sysadmins crash course',
+      'Watch: Ansible for IT Pros',
+      'Watch: CI/CD Pipeline Explained',
+      'Practice: DevOps Lab scripts on this site',
+      'Write: A basic PowerShell script from scratch',
+      'Know: what SelectQuote means by "identify repetitive tasks"',
+    ]
+  },
+  {
+    num: 8, color: '#444', title: 'Interview Prep', sub: 'Consolidate + practice answers',
+    tasks: [
+      'Complete all 6 topic quizzes — score 80%+ each',
+      'Practice: STAR format for behavioral questions',
+      'Prepare: 3 examples of problems you\'ve solved technically',
+      'Review: SelectQuote core values (SERVICE acronym)',
+      'Read: "Real Experience" section on this site twice',
+      'Know: what you will automate in week 1 at the internship',
+    ]
+  }
+];
+
+function renderWeeks() {
+  const grid = document.getElementById('week-grid');
+  grid.innerHTML = '';
+  WEEKS.forEach(w => {
+    const done = w.tasks.filter((_, i) => doneTasks.has(`w${w.num}-t${i}`)).length;
+    const card = document.createElement('div');
+    card.className = 'week-card';
+    card.innerHTML = `
+      <div class="week-header">
+        <div class="week-num" style="background:${w.color}">W${w.num}</div>
+        <div><div class="week-title">${w.title}</div><div class="week-subtitle">${w.sub}</div></div>
+      </div>
+      <div class="week-body">
+        ${w.tasks.map((t, i) => {
+          const id = `w${w.num}-t${i}`;
+          const isDone = doneTasks.has(id);
+          return `<div class="week-task ${isDone ? 'done' : ''}" onclick="toggleTask('${id}', this)">
+            <div class="check">${isDone ? '✓' : ''}</div>
+            <div class="task-text">${t}</div>
+          </div>`;
+        }).join('')}
+        <div class="week-progress">
+          <div class="week-prog-label"><span>Progress</span><span>${done}/${w.tasks.length}</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${done/w.tasks.length*100}%"></div></div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleTask(id, el) {
+  const wasDone = doneTasks.has(id);
+  if (wasDone) doneTasks.delete(id);
+  else { doneTasks.add(id); addXP(10, 'Task completed'); }
+  el.classList.toggle('done', !wasDone);
+  el.querySelector('.check').textContent = wasDone ? '' : '✓';
+  el.querySelector('.task-text').style.textDecoration = wasDone ? '' : 'line-through';
+  renderWeeks();
+  updateStats();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════════════════
+const QUIZ = [
+  {t:'VMware',q:'What is the primary function of VMware ESXi?',a:['A backup agent for VMs','A Type-1 bare-metal hypervisor that hosts virtual machines','A vCenter plugin for storage management','A network firewall for virtualized environments'],c:1,e:'ESXi is a Type-1 hypervisor installed directly on server hardware. It creates an abstraction layer so multiple VMs can share one physical server\'s CPU, RAM, and storage.'},
+  {t:'VMware',q:'vMotion requires which minimum network bandwidth for best results?',a:['1 GbE shared with management','Dedicated 10 GbE VMkernel adapter','Any available NIC in the team','Wi-Fi is acceptable for small VMs'],c:1,e:'A dedicated 10GbE vMotion VMkernel ensures the memory transfer completes quickly enough to keep the stun period under 500ms. Sharing with management traffic causes vMotion failures and extended stun windows.'},
+  {t:'VMware',q:'What does VMware DRS stand for and what does it do?',a:['Distributed Recovery System — restores VMs from backups','Distributed Resource Scheduler — automatically load-balances VMs across hosts','Dynamic Replication Service — replicates VMs to a secondary site','Datacenter Routing Service — controls network routing between VMs'],c:1,e:'DRS monitors CPU and RAM utilization across all hosts in a cluster and uses vMotion to automatically migrate VMs to balance the load. It can run in Manual, Partially Automated, or Fully Automated mode.'},
+  {t:'VMware',q:'What is the correct order of operations to safely take a VM snapshot before a patch?',a:['Patch first, then snapshot as a post-patch record','Snapshot → patch → verify → delete snapshot','Snapshot → delete → patch → snapshot again','Power off → snapshot → patch → power on'],c:1,e:'Take the snapshot first (pre-patch state), apply the patch, verify the system works, then delete the snapshot. Leaving snapshots long-term consumes storage via growing delta files.'},
+  {t:'VMware',q:'Which VMware feature automatically restarts VMs on surviving hosts after a host hardware failure?',a:['DRS','vMotion','HA (High Availability)','Fault Tolerance'],c:2,e:'VMware HA monitors heartbeats from all ESXi hosts. When a host stops responding, HA restarts all its VMs on remaining hosts in the cluster within minutes. No vMotion — VMs are restarted, not migrated.'},
+  {t:'VMware',q:'What is the difference between a VMware template and a snapshot?',a:['Templates are for backup; snapshots are for deployment','Snapshots capture running state for rollback; templates are master images for deploying new VMs','They are the same thing with different names','Templates require vCenter; snapshots work without it'],c:1,e:'Templates are VM master images with the OS pre-configured, used to clone and deploy identical VMs quickly. Snapshots are point-in-time state captures for rollback on an existing VM — not for new deployments.'},
+  {t:'Pure Storage',q:'What two technologies combine to achieve Pure Storage\'s 5:1+ data reduction ratio?',a:['RAID-6 and caching','Deduplication and compression','Tiering and erasure coding','Encryption and striping'],c:1,e:'Deduplication removes duplicate data blocks across all volumes. Compression shrinks remaining blocks. Together, a customer writing 10TB might consume only 2TB of physical flash.'},
+  {t:'Pure Storage',q:'Pure Storage\'s read latency is typically measured in which unit, indicating its performance advantage?',a:['Seconds','Milliseconds (5-15ms)','Sub-milliseconds (0.1-0.5ms)','Microseconds (under 100μs)'],c:2,e:'Pure NVMe flash delivers sub-millisecond latency — typically 0.1-0.5ms reads. Traditional SAS/SATA SAN averages 5-15ms. For database and VM workloads, this 20-100x difference is significant.'},
+  {t:'Pure Storage',q:'What is Pure Storage ActiveCluster?',a:['A cluster of Pure arrays for capacity expansion','Synchronous replication between two arrays for zero-RPO active-active storage','An asynchronous replication schedule for DR','A Pure1 monitoring feature for cluster health'],c:1,e:'ActiveCluster provides synchronous replication — every write is committed to both arrays before acknowledging to the host. This gives RPO=0 and the ability to sustain a complete site failure without losing a single write.'},
+  {t:'Veeam',q:'What does the 3-2-1 backup rule specify?',a:['3 full backups, 2 weekly, 1 daily','3 copies of data, on 2 different storage media types, with 1 copy stored offsite','Run backups 3 times, verify 2 times, archive 1 time','3 retention points, 2 repositories, 1 tape copy'],c:1,e:'The 3-2-1 rule: 3 total copies (production + 2 backups), stored on 2 different media types (e.g., disk and cloud object storage), with 1 copy stored at an offsite location. Veeam\'s SOBR with S3 capacity tier satisfies this automatically.'},
+  {t:'Veeam',q:'What is Changed Block Tracking (CBT) and why does it matter for backup performance?',a:['A Veeam feature that changes block sizes for better compression','A VMware API that tracks which disk blocks changed since the last backup, enabling fast incremental backups','A network protocol for transferring backup data at high speed','A Pure Storage feature for tracking volume changes'],c:1,e:'CBT is a VMware API that records exactly which 512KB blocks on a VMDK changed since the last backup. Veeam uses CBT so that instead of reading the entire 200GB VM disk, it only reads the 2GB that actually changed — making incremental backups extremely fast.'},
+  {t:'Veeam',q:'What is Veeam Instant Recovery and what technology enables it?',a:['A feature that pre-stages restore data using machine learning prediction','Booting a VM directly from the backup file using Veeam vPower NFS, making it live in under 60 seconds','A Pure Storage snapshot that can be attached to VMware instantly','A VMware vMotion-based recovery that migrates a backup to production storage'],c:1,e:'Instant Recovery uses Veeam vPower NFS to publish the backup file as an NFS datastore and register the VM from it. The VM boots within seconds from backup. You can then Storage vMotion it to production storage while it continues running.'},
+  {t:'Veeam',q:'What makes S3 Object Lock in COMPLIANCE mode unique for backup protection?',a:['It encrypts backups with a unique key only Veeam can decrypt','Nobody — including AWS root — can delete or modify objects before the retention period expires','It automatically sends backup copies to multiple AWS regions','It enables faster restore speeds compared to standard S3 storage'],c:1,e:'S3 Object Lock COMPLIANCE mode is a WORM (Write Once Read Many) guarantee enforced at the storage level. Even AWS administrators cannot override it. This is why it\'s considered ransomware-proof — attackers who compromise your AWS account still cannot delete backups.'},
+  {t:'DigiCert',q:'What happens when an SSL/TLS certificate expires on a production web server?',a:['The server automatically generates a self-signed certificate','Browsers display security warnings or block access entirely — effectively an outage','HTTPS downgrades to HTTP automatically','Nothing — the certificate stays valid for a 30-day grace period'],c:1,e:'When a TLS certificate expires, browsers show ERR_CERT_DATE_INVALID and either block access or show a hard warning that most users won\'t bypass. For a business-critical system like SelectQuote\'s insurance portal, this is a full customer-facing outage.'},
+  {t:'DigiCert',q:'What is a CSR (Certificate Signing Request)?',a:['A request to revoke an existing certificate','A file containing your public key and identity info, sent to a CA to obtain a signed TLS certificate','A Veeam feature for generating storage certificates','An audit log of certificate usage events'],c:1,e:'A CSR is generated on the server where you\'ll install the certificate. It contains your public key and subject identity (CN, Organization, Country, SANs). You submit the CSR to DigiCert, they verify your identity and sign it, returning a trusted certificate.'},
+  {t:'DigiCert',q:'What is the difference between DV and OV certificate validation?',a:['DV certs are longer; OV certs are shorter in bit length','DV only verifies domain ownership; OV additionally verifies the organization\'s legal identity','DV is for internal servers; OV is only for public-facing websites','There is no meaningful difference — both offer the same trust level'],c:1,e:'DV (Domain Validation) only proves you control the domain — automated and fast. OV (Organization Validation) additionally verifies that the organization legally exists, with DigiCert checking business registrations. For SelectQuote\'s customer-facing systems, OV or EV is used.'},
+  {t:'OpenVPN',q:'What is the key operational difference between split tunneling and full tunneling?',a:['Split tunneling uses UDP; full tunneling uses TCP','Split tunneling routes only corporate traffic through VPN; full tunneling routes all internet traffic through VPN','Split tunneling is less secure because it doesn\'t encrypt traffic','Full tunneling is faster because it optimizes all routes'],c:1,e:'Split tunneling: only traffic destined for corporate subnets uses the VPN tunnel. Internet browsing goes direct from the client. Full tunneling: ALL traffic (even Google.com) routes through VPN — more secure and auditable, but puts more load on the VPN server.'},
+  {t:'AWS',q:'Under the AWS Shared Responsibility Model, who is responsible for patching the OS on an EC2 instance?',a:['AWS — they manage all software automatically','The customer (SelectQuote) — they own everything running on the instance','It\'s shared — AWS patches the kernel; customer patches applications','The EC2 instance patches itself through AWS Systems Manager'],c:1,e:'AWS secures the underlying cloud infrastructure (hardware, hypervisor, network). The customer is responsible for the OS, applications, data, and network configuration on their instances. This means SelectQuote owns EC2 OS patching, security groups, IAM policies, and S3 bucket policies.'},
+  {t:'AWS',q:'What is AWS CloudTrail used for?',a:['Performance monitoring and alerting for AWS resources','Recording all API calls made to AWS services — who did what, when, and from where','Automated scaling of EC2 instances based on traffic','Managing DNS records for Route 53 hosted zones'],c:1,e:'CloudTrail creates an immutable audit log of every API call made in your AWS account. If someone changes an IAM policy, launches an EC2 instance, or accesses an S3 bucket — CloudTrail records it. Critical for security auditing and incident investigation.'},
+  {t:'DevOps',q:'SelectQuote\'s IT Infrastructure Intern job description says interns should do what with repetitive tasks?',a:['Document them in a runbook and escalate to senior engineers','Identify them and build automated solutions to eliminate them','Reduce how often they occur by optimizing workflows','Complete them faster through better tooling'],c:1,e:'The SelectQuote DevOps Intern role explicitly states: "practice Redundancy and Recovery methods; being able to assist in a triaging workflow as well as identifying repetitive tasks and solutions." Automation is the core deliverable — find manual work, code it away.'},
+];
+
+let shuffledQuiz = [];
+function initQuiz() {
+  shuffledQuiz = [...QUIZ].sort(() => Math.random() - 0.5);
+  quizIdx = 0; quizCorrect = 0; quizTotal = 0;
+  renderQuestion();
+}
+function renderQuestion() {
+  if (quizIdx >= shuffledQuiz.length) { showResults(); return; }
+  const q = shuffledQuiz[quizIdx];
+  document.getElementById('q-topic-display').textContent = q.t;
+  document.getElementById('q-num').textContent = `QUESTION ${quizIdx+1} OF ${shuffledQuiz.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-feedback').style.display = 'none';
+  document.getElementById('q-next').style.display = 'none';
+  document.getElementById('score-display').textContent = quizCorrect + ' / ' + quizTotal;
+  document.getElementById('q-pbar').style.width = (quizIdx / shuffledQuiz.length * 100) + '%';
+  const opts = document.getElementById('q-opts');
+  opts.innerHTML = '';
+  // shuffle option order
+  const order = q.a.map((_, i) => i).sort(() => Math.random() - 0.5);
+  order.forEach(oi => {
+    const b = document.createElement('button');
+    b.className = 'quiz-option';
+    b.textContent = q.a[oi];
+    b.onclick = () => {
+      quizTotal++;
+      opts.querySelectorAll('.quiz-option').forEach(x => x.disabled = true);
+      const fb = document.getElementById('q-feedback');
+      if (oi === q.c) {
+        b.classList.add('correct'); quizCorrect++;
+        fb.className = 'quiz-feedback ok';
+        fb.innerHTML = '<strong>✓ Correct!</strong> ' + q.e;
+        addXP(20, 'Correct answer: ' + q.t);
+      } else {
+        b.classList.add('wrong');
+        opts.querySelectorAll('.quiz-option').forEach(x => { if (x.textContent === q.a[q.c]) x.classList.add('correct'); });
+        fb.className = 'quiz-feedback bad';
+        fb.innerHTML = '<strong>✗ Incorrect.</strong> The correct answer was: <em>' + q.a[q.c] + '</em>. ' + q.e;
+      }
+      fb.style.display = 'block';
+      document.getElementById('q-next').style.display = 'inline-flex';
+      document.getElementById('score-display').textContent = quizCorrect + ' / ' + quizTotal;
+      updateStats();
+    };
+    opts.appendChild(b);
+  });
+}
+function nextQuestion() { quizIdx++; renderQuestion(); }
+function showResults() {
+  const pct = Math.round(quizCorrect / shuffledQuiz.length * 100);
+  document.getElementById('q-text').textContent = `Quiz complete! You scored ${quizCorrect}/${shuffledQuiz.length} (${pct}%).`;
+  document.getElementById('q-opts').innerHTML = `<button class="btn btn-primary" onclick="initQuiz()">↻ Retake Quiz</button>`;
+  document.getElementById('q-feedback').style.display = 'none';
+  document.getElementById('q-next').style.display = 'none';
+  if (pct >= 80) { addXP(50, 'Quiz score: ' + pct + '%'); toast('🎉 ' + pct + '% — Outstanding!', 'success', 5000); }
+  else if (pct >= 60) { toast('Good effort — ' + pct + '%. Keep studying!', 'info', 4000); }
+  else { toast('Keep watching the videos and retry — ' + pct + '%', 'info', 4000); }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// GLOSSARY
+// ═══════════════════════════════════════════════════════════════════
+const GLOSSARY = [
+  {t:'ESXi',d:'VMware\'s Type-1 bare-metal hypervisor. Installed directly on server hardware. Runs VMs.',src:'VMware'},
+  {t:'vCenter',d:'Centralized management appliance for all ESXi hosts, VMs, clusters, HA, DRS, and vMotion.',src:'VMware'},
+  {t:'vMotion',d:'Live VM migration between ESXi hosts with zero downtime. Requires shared storage and vMotion network.',src:'VMware'},
+  {t:'HA',d:'High Availability. VMware feature that auto-restarts VMs on surviving hosts when a host fails.',src:'VMware'},
+  {t:'DRS',d:'Distributed Resource Scheduler. Auto load-balances VMs across cluster hosts using vMotion.',src:'VMware'},
+  {t:'VMDK',d:'Virtual Machine Disk. The file format for VM disk images in VMware environments.',src:'VMware'},
+  {t:'Snapshot',d:'Point-in-time state capture of a VM (disk + memory). NOT a backup — delta chains grow over time.',src:'VMware'},
+  {t:'Template',d:'Master VM image used to deploy new VMs consistently. Convert a VM → Template in vCenter.',src:'VMware'},
+  {t:'vDS',d:'vSphere Distributed Switch. Network switch managed centrally in vCenter across all hosts.',src:'VMware'},
+  {t:'VLAN',d:'Virtual LAN. Logical network segmentation using 802.1Q tags. Isolates traffic by purpose/security.',src:'Networking'},
+  {t:'FlashArray',d:'Pure Storage\'s all-NVMe enterprise storage product. Delivers sub-millisecond latency.',src:'Pure Storage'},
+  {t:'Purity OS',d:'Operating system running on Pure Storage FlashArrays. Manages dedup, compression, snapshots, replication.',src:'Pure Storage'},
+  {t:'Pure1',d:'Pure Storage\'s cloud-based AI management portal. Monitors all arrays, predicts capacity, flags anomalies.',src:'Pure Storage'},
+  {t:'Deduplication',d:'Eliminating duplicate data blocks so the same data is only stored once. Major storage savings.',src:'Storage'},
+  {t:'Data Reduction',d:'Combined ratio of dedup + compression savings. Pure typically achieves 5:1 or better.',src:'Pure Storage'},
+  {t:'ActiveCluster',d:'Pure Storage synchronous replication. Both arrays active simultaneously. Zero RPO.',src:'Pure Storage'},
+  {t:'RPO',d:'Recovery Point Objective. Maximum acceptable amount of data loss measured in time (e.g., 15 minutes).',src:'DR/Backup'},
+  {t:'RTO',d:'Recovery Time Objective. Maximum acceptable downtime duration before systems must be restored.',src:'DR/Backup'},
+  {t:'VBR',d:'Veeam Backup & Replication. Full product name for Veeam\'s main backup and recovery platform.',src:'Veeam'},
+  {t:'CBT',d:'Changed Block Tracking. VMware API recording which disk blocks changed since last backup. Enables fast incrementals.',src:'Veeam/VMware'},
+  {t:'.vbk',d:'Veeam full backup file extension.',src:'Veeam'},
+  {t:'.vib',d:'Veeam incremental backup file extension.',src:'Veeam'},
+  {t:'SOBR',d:'Scale-Out Backup Repository. Combines multiple repos into one tiered pool with performance, capacity, archive tiers.',src:'Veeam'},
+  {t:'SureBackup',d:'Veeam feature that automatically boots VMs from backup in an isolated lab and runs verification tests.',src:'Veeam'},
+  {t:'Instant Recovery',d:'Veeam feature that boots a VM directly from backup file via vPower NFS. Live in under 60 seconds.',src:'Veeam'},
+  {t:'vPower NFS',d:'Veeam technology that publishes backup files as NFS datastores so ESXi can boot VMs from them.',src:'Veeam'},
+  {t:'Object Lock',d:'AWS S3 feature that prevents deletion/modification of objects for a set period. WORM storage for backups.',src:'AWS'},
+  {t:'CA',d:'Certificate Authority. DigiCert is a trusted CA. Signs certificates to prove identity.',src:'PKI/DigiCert'},
+  {t:'CSR',d:'Certificate Signing Request. Contains public key + identity. Submit to DigiCert to obtain a signed cert.',src:'PKI/DigiCert'},
+  {t:'SAN (cert)',d:'Subject Alternative Name. TLS cert field listing multiple domain names covered by one certificate.',src:'PKI'},
+  {t:'Wildcard',d:'TLS cert covering *.domain.com — all one-level subdomains under one certificate.',src:'PKI'},
+  {t:'DV',d:'Domain Validation. Cert type that only verifies domain ownership. Fast, automated.',src:'PKI'},
+  {t:'OV',d:'Organization Validation. Cert type verifying the organization legally exists. Used for business sites.',src:'PKI'},
+  {t:'EV',d:'Extended Validation. Strictest cert type. Thorough business verification. Used for financial/high-trust sites.',src:'PKI'},
+  {t:'TLS',d:'Transport Layer Security. Protocol encrypting web traffic. HTTPS uses TLS. Supersedes SSL.',src:'Security'},
+  {t:'Split Tunneling',d:'VPN mode where only corporate traffic routes through VPN. Internet traffic goes direct from client.',src:'VPN'},
+  {t:'Full Tunnel',d:'VPN mode where ALL traffic routes through VPN. More secure, more load on VPN server.',src:'VPN'},
+  {t:'EC2',d:'AWS Elastic Compute Cloud. Virtual servers in AWS. Choose OS, CPU, RAM — like VMware VMs.',src:'AWS'},
+  {t:'S3',d:'AWS Simple Storage Service. Object storage for backups, logs, static files. Unlimited scale.',src:'AWS'},
+  {t:'VPC',d:'Virtual Private Cloud. Isolated virtual network in AWS. Your on-prem equivalent of a VLAN/subnet.',src:'AWS'},
+  {t:'IAM',d:'AWS Identity and Access Management. Users, roles, policies. Controls who can access what AWS resources.',src:'AWS'},
+  {t:'CloudWatch',d:'AWS monitoring service. Metrics, logs, alarms for EC2, S3, Lambda, and custom resources.',src:'AWS'},
+  {t:'CloudTrail',d:'AWS audit log service. Records all API calls — who, what, when, where for every action.',src:'AWS'},
+  {t:'Direct Connect',d:'Dedicated private network connection from on-premises to AWS. Consistent bandwidth, low latency.',src:'AWS'},
+  {t:'IaC',d:'Infrastructure as Code. Defining servers, networks, configs in machine-readable files (Terraform, Ansible).',src:'DevOps'},
+  {t:'CI/CD',d:'Continuous Integration / Continuous Delivery. Automated pipeline: code commit → test → build → deploy.',src:'DevOps'},
+  {t:'Ansible',d:'Agentless configuration management tool using YAML playbooks. SSH to Linux, WinRM to Windows.',src:'DevOps'},
+  {t:'Runbook',d:'Documented step-by-step procedure for handling a specific IT operation or incident.',src:'Operations'},
+  {t:'MTTR',d:'Mean Time to Recovery. Average time to restore a service after an incident. Lower is better.',src:'SRE'},
+  {t:'SLA',d:'Service Level Agreement. Formal uptime commitment. 99.9% = ~8.7 hours downtime per year allowed.',src:'Operations'},
+];
+
+function renderGloss(filter = '') {
+  const grid = document.getElementById('gloss-grid');
+  grid.innerHTML = '';
+  const f = filter.toLowerCase();
+  GLOSSARY.filter(g => !f || g.t.toLowerCase().includes(f) || g.d.toLowerCase().includes(f) || g.src.toLowerCase().includes(f))
+    .forEach(g => {
+      const card = document.createElement('div');
+      card.className = 'glossary-card';
+      card.innerHTML = `<div class="gterm">${g.t}</div><div class="gdef">${g.d}</div><div class="gsource">${g.src}</div>`;
+      grid.appendChild(card);
+    });
+}
+function filterGloss() { renderGloss(document.getElementById('gloss-search').value); }
+
+// ═══════════════════════════════════════════════════════════════════
+// PRO TIPS
+// ═══════════════════════════════════════════════════════════════════
+const TIPS = [
+  { icon: '👁', bg: '#dbeeff', title: 'Shadow before you touch', body: 'The fastest way to earn trust at a new job: spend week one watching. Ask "can I watch you do that?" before "can I do that?" Senior engineers will give you access faster when you\'ve proven you understand the system first.' },
+  { icon: '📏', bg: '#d4f5e2', title: 'Quantify everything', body: 'When you present your intern project, "before: 45 min manual. after: 3 min automated" is more powerful than any technical explanation. SelectQuote presents intern projects to VPs — numbers win.' },
+  { icon: '⏰', bg: '#fef3cd', title: 'Set 4 cert renewal alerts', body: 'Calendar reminders at 60, 30, 14, and 7 days before any TLS certificate expiry. Set them in monitoring (CloudWatch), email (DigiCert portal), AND your personal calendar. Expired cert = self-inflicted outage.' },
+  { icon: '📝', bg: '#fce0df', title: 'Document as you go', body: 'Every time you figure out how to do something, write a one-page runbook. Future-you at 2am during an incident will thank you. Creating runbooks also impresses managers — it shows you think about the team, not just yourself.' },
+  { icon: '🔐', bg: '#ede0ff', title: 'Principle of Least Privilege', body: 'Never use admin/root credentials for daily work. Create a named account with only what you need. This is a core security principle and screams competence in any interview. On AWS: never use root. Never.' },
+  { icon: '🤝', bg: '#dbeeff', title: 'Ask questions with context', body: 'Don\'t ask "what is vMotion?" — read the docs first, then ask "I understand vMotion migrates VMs live, but I\'m unclear on the stun period — can you walk me through what happens in that window?" Specific questions signal effort.' },
+  { icon: '💾', bg: '#d4f5e2', title: 'Snapshots ≠ Backups', body: 'Internalize this forever: VMware snapshots are for short-term rollback. Veeam backups are for recovery. Snapshot chains get corrupted. A snapshot is not a safety net — it\'s a delta file that can disappear. Say this in your first week and you\'ll impress everyone.' },
+  { icon: '🤖', bg: '#fef3cd', title: 'Automate one visible thing', body: 'Find one manual, repetitive task in your first two weeks and automate it. Even a small 20-line script that saves 30 minutes per week is worth $1,500/year. Frame it that way. Identifying AND solving it is what SelectQuote explicitly hired you to do.' },
+  { icon: '📊', bg: '#fce0df', title: 'Learn the monitoring dashboard', body: 'On day one, find the monitoring system (CloudWatch, Datadog, Nagios, whatever they use) and spend an hour understanding what "normal" looks like. When something breaks, the person who knows what normal was can diagnose it 10x faster.' },
+  { icon: '🗣', bg: '#ede0ff', title: 'Communicate during outages', body: '"What is down, why, what are we doing, when will it be fixed." Say this every 15 minutes during an incident even if nothing has changed. Silence during an outage makes managers panic. Incomplete updates are better than no updates.' },
+  { icon: '🔗', bg: '#dbeeff', title: 'Understand how it all connects', body: 'VMware VMs → Pure Storage datastores → Veeam backs them up → S3 stores offsite copies. OpenVPN uses DigiCert certs. AWS connects via Direct Connect. Understanding the end-to-end chain is what separates interns from engineers.' },
+  { icon: '📚', bg: '#d4f5e2', title: 'Your lab notes are gold', body: 'Keep a personal wiki (Notion, OneNote, doesn\'t matter). Every command you run that works, every error you solve, every config you understand — document it. By month 3 you\'ll have a personal reference that\'s worth more than any certification.' },
+];
+
+function renderTips() {
+  const grid = document.getElementById('tips-grid');
+  grid.innerHTML = '';
+  TIPS.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'tip-card';
+    card.innerHTML = `<div class="tip-icon" style="background:${t.bg}">${t.icon}</div><div><div class="tip-title">${t.title}</div><div class="tip-body">${t.body}</div></div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// STATS UPDATE
+// ═══════════════════════════════════════════════════════════════════
+function updateStats() {
+  const w = watched.size;
+  document.getElementById('stat-watched').textContent = w;
+  document.getElementById('bar-watched').style.width = Math.min(100, w / VIDEOS.length * 100) + '%';
+  const d = doneTasks.size;
+  const totalTasks = WEEKS.reduce((a, w) => a + w.tasks.length, 0);
+  document.getElementById('stat-tasks').textContent = d;
+  document.getElementById('bar-tasks').style.width = Math.min(100, d / totalTasks * 100) + '%';
+  if (quizTotal > 0) {
+    const pct = Math.round(quizCorrect / quizTotal * 100);
+    document.getElementById('stat-quiz').textContent = pct + '%';
+    document.getElementById('bar-quiz').style.width = pct + '%';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+renderVideos();
+renderExperiences();
+renderWeeks();
+initQuiz();
+renderGloss();
+renderTips();
+</script>
+</body>
+</html>
